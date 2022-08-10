@@ -27,9 +27,9 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
 import android.widget.Toast;
 
-// TODO (1) Implement OnPreferenceChangeListener
+// DONE (1) Implement OnPreferenceChangeListener
 public class SettingsFragment extends PreferenceFragmentCompat implements
-        OnSharedPreferenceChangeListener {
+        OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
@@ -51,7 +51,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
                 setPreferenceSummary(p, value);
             }
         }
-        // TODO (3) Add the OnPreferenceChangeListener specifically to the EditTextPreference
+        // DONE (3) Add the OnPreferenceChangeListener specifically to the EditTextPreference
+        EditTextPreference preference = (EditTextPreference) findPreference(getString(R.string.pref_size_key));
+        preference.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -88,10 +90,27 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
         }
     }
 
-    // TODO (2) Override onPreferenceChange. This method should try to convert the new preference value
+    // DONE (2) Override onPreferenceChange. This method should try to convert the new preference value
     // to a float; if it cannot, show a helpful error message and return false. If it can be converted
     // to a float check that that float is between 0 (exclusive) and 3 (inclusive). If it isn't, show
     // an error message and return false. If it is a valid number, return true.
+
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        try {
+            Float size = Float.parseFloat(String.valueOf(newValue));
+            if (size <= 0 || size > 3) {
+                Toast.makeText(getActivity(),"The value must be a numeric from 0 (exclusive) to 3 (inclusive)", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            return true;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(),"The value must be a numeric from 0 (exclusive) to 3 (inclusive)", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
