@@ -19,7 +19,11 @@ android {
         }
     }
 
-    // TODO (1) Enable Data Binding in your application
+    // DONE (1) Enable Data Binding in your application
+    buildFeatures {
+        dataBinding true
+    }
+
 }
 
 dependencies {

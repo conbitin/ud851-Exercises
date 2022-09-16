@@ -16,12 +16,24 @@ package com.example.android.boardingpass;
 * limitations under the License.
 */
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.example.android.boardingpass.databinding.ActivityMainBinding;
+import com.example.android.boardingpass.utilities.FakeDataUtils;
+
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
 public class MainActivity extends AppCompatActivity {
 
-    //TODO (3) Create a data binding instance called mBinding of type ActivityMainBinding
+    //DONE (3) Create a data binding instance called mBinding of type ActivityMainBinding
+    ActivityMainBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,21 +41,40 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        // TODO (4) Set the Content View using DataBindingUtil to the activity_main layout
+        // DONE (4) Set the Content View using DataBindingUtil to the activity_main layout
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        // TODO (5) Load a BoardingPassInfo object with fake data using FakeDataUtils
+        // DONE (5) Load a BoardingPassInfo object with fake data using FakeDataUtils
+        BoardingPassInfo boardingPassInfo = FakeDataUtils.generateFakeBoardingPassInfo();
 
-        // TODO (9) Call displayBoardingPassInfo and pass the fake BoardingInfo instance
+        // DONE (9) Call displayBoardingPassInfo and pass the fake BoardingInfo instance
+        displayBoardingPassInfo(boardingPassInfo);
 
     }
 
     private void displayBoardingPassInfo(BoardingPassInfo info) {
 
-        // TODO (6) Use mBinding to set the Text in all the textViews using the data in info
+        // DONE (6) Use mBinding to set the Text in all the textViews using the data in info
+        SimpleDateFormat formatter = new SimpleDateFormat(getString(R.string.timeFormat), Locale.getDefault());
+        mBinding.textViewPassengerName.setText(info.passengerName.toString());
+        mBinding.textViewOriginAirport.setText(info.originCode.toString());
+        mBinding.textViewDestinationAirport.setText(info.destCode.toString());
+        mBinding.textViewFlightCode.setText(info.flightCode.toString());
+        mBinding.textViewBoardingTime.setText(formatter.format(info.boardingTime));
+        mBinding.textViewDepartureTime.setText(formatter.format(info.departureTime));
+        mBinding.textViewArrivalTime.setText(formatter.format(info.arrivalTime));
+        mBinding.textViewTerminal.setText(info.departureTerminal.toString());
+        mBinding.textViewGate.setText(info.departureGate.toString());
+        mBinding.textViewSeat.setText(info.seatNumber.toString());
 
-        // TODO (7) Use a SimpleDateFormat formatter to set the formatted value in time text views
+        // DONE (7) Use a SimpleDateFormat formatter to set the formatted value in time text views
 
-        // TODO (8) Use TimeUnit methods to format the total minutes until boarding
+        // DONE (8) Use TimeUnit methods to format the total minutes until boarding
+        long totalMinutesUntilBoarding = info.getMinutesUntilBoarding();
+        long hourUntilBoarding = TimeUnit.MINUTES.toHours(totalMinutesUntilBoarding);
+        long minuteUntilBoarding = totalMinutesUntilBoarding - TimeUnit.HOURS.toMinutes(hourUntilBoarding);
+        String hourAndminuteUntilBoarding = getString(R.string.countDownFormat, hourUntilBoarding, minuteUntilBoarding);
+        mBinding.textViewBoardingInCountdown.setText(hourAndminuteUntilBoarding);
 
     }
 }
