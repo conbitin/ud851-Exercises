@@ -12,7 +12,7 @@
     tools:context="com.example.android.visualpolish.ColorFontActivity">
 
     <!-- Views for displaying colors -->
-    <!-- TODO (3) Add a view to display the newly created "colorPrimaryLight"; layout height = 48dp -->
+    <!-- DONE (3) Add a view to display the newly created "colorPrimaryLight"; layout height = 48dp -->
 
     <View android:id="@+id/primary"
         android:layout_width="match_parent"
@@ -20,6 +20,11 @@
         android:background="@color/colorPrimary" />
 
     <View android:id="@+id/primaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/colorPrimaryDark"/>
+    <View
+        android:id="@+id/primaryLight"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/colorPrimaryDark"/>
@@ -72,7 +77,14 @@
         android:textSize="20sp"
         android:fontFamily="sans-serif-medium"/>
 
-    <!-- TODO (4) Add a text view to display text with a size = 16sp, and a font-family = sans-serif-smallcaps -->
+    <!-- DONE (4) Add a text view to display text with a size = 16sp, and a font-family = sans-serif-smallcaps -->
+    <TextView
+        android:id="@+id/text16"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="Smallcaps 16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 
 </LinearLayout>
